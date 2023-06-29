@@ -44,14 +44,11 @@ contract CounterTest is Test {
         vm.startPrank(attackerEOA);
         
         attacker.setup();
-        attacker.attack(usdc, user);
+        attacker.attack(usdc, user, attackerEOA);
         uint balance = usdc.balanceOf(attackerEOA);
-        // 找不到為什麼地址跑去這裡＠＠
-        console.log("0x1804c8AB1F12E6bbf3894d4083f33e07309d1f38 balance: %s", usdc.balanceOf(address(0x1804c8AB1F12E6bbf3894d4083f33e07309d1f38)));
-        // 0
         console.log("attackerEOA balance: %s", balance);
 
-        // assertEq(balance, 5000 * 10 ** 6);
+        assertEq(balance, 5000 * 10 ** 6);
         vm.stopPrank();
     }
 }

